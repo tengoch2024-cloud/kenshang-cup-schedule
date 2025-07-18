@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健祥盃圍棋公開賽 - 賽程時間與頒獎</title>
+    <style>
+        body {
+            font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2.2em;
+        }
+        .update-info {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        th {
+            background-color: #4CAF50; /* Primary green */
+            color: white;
+            font-weight: bold;
+            white-space: nowrap; /* Prevent wrapping for headers */
+        }
+        td {
+            background-color: #fdfdfd;
+        }
+        tr:nth-child(even) td {
+            background-color: #f9f9f9;
+        }
+        tr:hover td {
+            background-color: #e6ffe6; /* Light green on hover */
+        }
+        .important-note {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffe082;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            color: #856404;
+            font-size: 0.9em;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            th, td {
+                padding: 8px 10px;
+                font-size: 0.85em;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+        @media (max-width: 600px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            tr { border: 1px solid #ccc; margin-bottom: 15px; }
+            td {
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+            }
+            td:before {
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align: left;
+                font-weight: bold;
+                color: #555;
+            }
+            /* Labeling the data cells */
+            td:nth-of-type(1):before { content: "組別"; }
+            td:nth-of-type(2):before { content: "第一場"; }
+            td:nth-of-type(3):before { content: "第二場"; }
+            td:nth-of-type(4):before { content: "第三場"; }
+            td:nth-of-type(5):before { content: "第四場"; }
+            td:nth-of-type(6):before { content: "第五場"; }
+            td:nth-of-type(7):before { content: "頒獎時間"; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏆 2025 第四屆彰化縣健祥盃全國圍棋公開賽</h1>
+        <div class="update-info">
+            最後更新時間：<span id="lastUpdated"></span>
+        </div>
+        
+        <table id="scheduleTable">
+            <thead>
+                <tr>
+                    <th>組別</th>
+                    <th>第一場</th>
+                    <th>第二場</th>
+                    <th>第三場</th>
+                    <th>第四場</th>
+                    <th>第五場</th>
+                    <th>頒獎時間</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+
+        <div class="important-note">
+            <strong>重要提示：</strong> 各場次開賽時間將依實際比賽進度動態調整，請隨時留意本頁面最新公告！頒獎時間為預估，實際頒獎時間請依現場廣播為準。
+        </div>
+    </div>
+
+    <script>
+        function populateSchedule(scheduleData) {
+            const tableBody = document.querySelector('#scheduleTable tbody');
+            tableBody.innerHTML = ''; // 清空現有內容
+
+            if (scheduleData && scheduleData.length > 0) {
+                scheduleData.forEach(item => {
+                    const row = tableBody.insertRow();
+                    row.insertCell().textContent = item.group || ''; 
+                    row.insertCell().textContent = item.round1 || '未定'; 
+                    row.insertCell().textContent = item.round2 || '未定';
+                    row.insertCell().textContent = item.round3 || '未定';
+                    row.insertCell().textContent = item.round4 || '未定';
+                    row.insertCell().textContent = item.round5 || '未定';
+                    row.insertCell().textContent = item.award || '未定';
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="7">目前沒有賽程數據可顯示。</td></tr>';
+            }
+
+            // 更新最後更新時間 (此為頁面加載時間，非數據更新時間)
+            const now = new Date();
+            const options = {
+                year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit',
+                hour12: false // 24小時制
+            };
+            document.getElementById('lastUpdated').textContent = now.toLocaleString('zh-TW', options);
+        }
+
+        // 從外部 Google Apps Script 載入數據
+        // *** 您必須將下面的 URL 替換為您從 Google Apps Script 部署獲得的「網路應用程式網址」 ***
+        // *** 範例網址看起來會像這樣：https://script.google.com/macros/s/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/exec ***
+        const GOOGLE_APPS_SCRIPT_WEB_APP_URL = '【https://script.google.com/macros/s/AKfycbw3N3bJyY7OH5sg3N89LDZNMEYAgRQmZymio_X3ruhR8Dnw6pM1crGa1fEw1s0qFSdWJg/exec】'; 
+        
+        fetch(GOOGLE_APPS_SCRIPT_WEB_APP_URL) 
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                populateSchedule(data);
+            })
+            .catch(error => {
+                console.error('Error fetching the schedule data:', error);
+                document.querySelector('#scheduleTable tbody').innerHTML = '<tr><td colspan="7">載入賽程數據失敗，請檢查網路或稍後再試。</td></tr>';
+            });
+    </script>
+</body>
+</html>
