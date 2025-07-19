@@ -176,31 +176,54 @@
         // *** 預設的組別資料 - 即使讀不到 Google Sheet 也會顯示這些組別 ***
         // *** 您可以在這裡新增或刪除組別，確保所有組別都列在這裡 ***
         // *** 這些組別名稱也會用來填充下拉選單 ***
-        const defaultScheduleData = [
-            { group: "六段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "四段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "三段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "二段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "初段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "甲組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "乙組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "丙組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "丁組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "戊組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "己組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "庚A組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "庚B組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "辛A組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "辛B組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "辛C組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "入門組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "幼兒組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            // 如果庚辛組總共是6組，請繼續在這裡補充：
-            // { group: "庚辛_6", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            // ...以此類推，確保所有可能出現的組別都在這裡定義
-            // 注意：這裡只列出組別名稱，時間都是null
-        ];
+
+    const defaultScheduleData = [
+        { group: "六段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+        { group: "五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+        { group: "四段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+        { group: "三段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+        { group: "二段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+        { group: "初段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+        { group: "甲組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+        { group: "乙組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+        { group: "丙組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+        { group: "丁組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+        { group: "戊組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+        { group: "己組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+        { group: "庚組A", round1: null, round2: null, round3: null, round4: null, round5: null, award: null }, /* 確保這裡的組別名稱和您的 Google Sheet 完全一致 */
+        { group: "庚組B", round1: null, round2: null, round3: null, round4: null, round5: null, award: null }, /* 這是您截圖中看到的組別 */
+        { group: "辛組A", round1: null, round2: null, round3: null, round4: null, round5: null, award: null }, /* 請根據實際情況調整或新增 */
+        { group: "辛組B", round1: null, round2: null, round3: null, round4: null, round5: null, award: null }, /* 例如辛組C */
+        // 您截圖中還有 "入門組" 和 "幼兒組"，請確保它們也在 defaultScheduleData 中
+        { group: "入門組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+        { group: "幼兒組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+        // ...以此類推，確保所有組別都在這裡，且名稱與您的 Google Sheet 和下拉選單中的實際顯示一致
+    ];
+
+    // *** 新增：自定義組別排序的順序陣列 ***
+    // *** 請確保這個陣列中的組別名稱，與 defaultScheduleData 中的 group 名稱完全一致，且順序就是您期望的排序！ ***
+    const customGroupOrder = [
+        "六段組",
+        "五段組",
+        "四段組",
+        "三段組",
+        "二段組",
+        "初段組",
+        "甲組",
+        "乙組",
+        "丙組",
+        "丁組",
+        "戊組",
+        "己組",
+        "庚組A", // 根據您的截圖，您有庚A、庚B，還有辛A、辛B、辛C，請按您的實際順序填寫
+        "庚組B",
+        "辛組A",
+        "辛組B",
+        "辛組C", // 假設辛組有C組，請根據您的實際情況修改
+        "入門組",
+        "幼兒組"
+    ];
+    // *** 結束新增 ***
 
         let fetchedScheduleData = []; // 用於儲存從 Google Apps Script 讀取到的原始數據
 
@@ -236,24 +259,23 @@
         }
 
         // 函數：填充組別下拉選單
-        function populateGroupDropdown() {
-            const groupSelector = document.getElementById('groupSelector');
-            groupSelector.innerHTML = '<option value="all">顯示所有組別</option>'; // 預設選項
+       function populateGroupDropdown() {
+        const groupSelector = document.getElementById('groupSelector');
+        groupSelector.innerHTML = '<option value="all">顯示所有組別</option>'; // 預設選項
 
-            // 從 defaultScheduleData 獲取所有獨特的組別名稱，並排序
-            // 這樣下拉選單的組別列表是固定且有序的
-            const uniqueGroups = [...new Set(defaultScheduleData.map(item => item.group))]
-                                .filter(group => group) // 過濾掉可能的空值
-                                .sort(); 
+        // 從 customGroupOrder 陣列中獲取組別，這樣就能按照預設順序排列
+        const uniqueGroups = customGroupOrder.filter(group => {
+            // 確保只加入 defaultScheduleData 中存在的組別，避免 customGroupOrder 寫錯
+            return defaultScheduleData.some(item => item.group === group);
+        });
 
-            uniqueGroups.forEach(group => {
-                const option = document.createElement('option');
-                option.value = group;
-                option.textContent = group;
-                groupSelector.appendChild(option);
-            });
-        }
-
+        uniqueGroups.forEach(group => {
+            const option = document.createElement('option');
+            option.value = group;
+            option.textContent = group;
+            groupSelector.appendChild(option);
+        });
+    }
         // 函數：根據下拉選單選擇進行篩選並重新渲染表格
         function filterAndRenderTable() {
             const selectedGroup = document.getElementById('groupSelector').value;
