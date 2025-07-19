@@ -194,12 +194,13 @@
         { group: "庚B組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null }, /* 這是您截圖中看到的組別 */
         { group: "辛A組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null }, /* 請根據實際情況調整或新增 */
         { group: "辛B組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null }, /* 例如辛組C */
-        { group: "辛C組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null }, /*
-        // 您截圖中還有 "入門組" 和 "幼兒組"，請確保它們也在 defaultScheduleData 中
-        { group: "入門組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-        { group: "幼兒組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-        // ...以此類推，確保所有組別都在這裡，且名稱與您的 Google Sheet 和下拉選單中的實際顯示一致
-    ];
+        { group: "辛C組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null }, // 這行程式碼的註解已修正
+        // 確保 "入門組" 和 "幼兒組" 在 defaultScheduleData 中，且名稱一致
+        { group: "入門組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+        { group: "幼兒組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null }
+    ]; // 陣列的最後一個元素後面沒有逗號
+
+    // 其他註解可以放在 customGroupOrder 的上方或下方，使用 // 符號
 
     // *** 新增：自定義組別排序的順序陣列 ***
     // *** 請確保這個陣列中的組別名稱，與 defaultScheduleData 中的 group 名稱完全一致，且順序就是您期望的排序！ ***
