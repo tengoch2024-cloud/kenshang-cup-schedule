@@ -32,6 +32,23 @@
             font-size: 0.9em;
             color: #7f8c8d;
         }
+        .filter-section {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        .filter-section label {
+            margin-right: 10px;
+        }
+        .filter-section select {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            background-color: white;
+            cursor: pointer;
+            min-width: 150px; /* 讓選單不要太窄 */
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -75,6 +92,11 @@
             }
             h1 {
                 font-size: 1.8em;
+            }
+            .filter-section select {
+                min-width: unset;
+                width: 80%;
+                margin-top: 10px;
             }
         }
         @media (max-width: 600px) {
@@ -123,6 +145,12 @@
             最後更新時間：<span id="lastUpdated"></span>
         </div>
         
+        <div class="filter-section">
+            <label for="groupSelector">選擇組別：</label>
+            <select id="groupSelector">
+                </select>
+        </div>
+
         <table id="scheduleTable">
             <thead>
                 <tr>
@@ -147,6 +175,7 @@
     <script>
         // *** 預設的組別資料 - 即使讀不到 Google Sheet 也會顯示這些組別 ***
         // *** 您可以在這裡新增或刪除組別，確保所有組別都列在這裡 ***
+        // *** 這些組別名稱也會用來填充下拉選單 ***
         const defaultScheduleData = [
             { group: "六段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
             { group: "五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
@@ -160,55 +189,41 @@
             { group: "丁組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
             { group: "戊組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
             { group: "己組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "庚組1", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "庚組2", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "辛組1", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "辛組2", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
-            { group: "辛組3", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "庚A組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "庚B組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "辛A組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "辛B組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "辛C組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "入門組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "幼兒組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
             // 如果庚辛組總共是6組，請繼續在這裡補充：
             // { group: "庚辛_6", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
             // ...以此類推，確保所有可能出現的組別都在這裡定義
             // 注意：這裡只列出組別名稱，時間都是null
         ];
 
-        function populateSchedule(scheduleDataToDisplay) {
+        let fetchedScheduleData = []; // 用於儲存從 Google Apps Script 讀取到的原始數據
+
+        // 函數：渲染表格內容
+        function renderTable(dataToDisplay) {
             const tableBody = document.querySelector('#scheduleTable tbody');
             tableBody.innerHTML = ''; // 清空現有內容
 
-            // 使用預設數據作為基礎，然後用從 Google Sheet 讀到的數據覆蓋
-            const mergedScheduleData = JSON.parse(JSON.stringify(defaultScheduleData)); // 深拷貝預設數據
-            
-            if (scheduleDataToDisplay && scheduleDataToDisplay.length > 0) {
-                scheduleDataToDisplay.forEach(sheetItem => {
-                    const groupName = sheetItem.group;
-                    // 找到預設數據中對應的組別
-                    const defaultItem = mergedScheduleData.find(item => item.group === groupName);
-                    if (defaultItem) {
-                        // 如果 Google Sheet 中有這個組別的數據，就用它來更新
-                        defaultItem.round1 = sheetItem.round1;
-                        defaultItem.round2 = sheetItem.round2;
-                        defaultItem.round3 = sheetItem.round3;
-                        defaultItem.round4 = sheetItem.round4;
-                        defaultItem.round5 = sheetItem.round5;
-                        defaultItem.award = sheetItem.award;
-                    } else {
-                        // 如果 Google Sheet 中有預設數據中沒有的組別，就直接新增
-                        mergedScheduleData.push(sheetItem);
-                    }
+            if (dataToDisplay && dataToDisplay.length > 0) {
+                dataToDisplay.forEach(item => {
+                    const row = tableBody.insertRow();
+                    row.insertCell().textContent = item.group || ''; 
+                    row.insertCell().textContent = item.round1 || '未排定'; 
+                    row.insertCell().textContent = item.round2 || '未排定';
+                    row.insertCell().textContent = item.round3 || '未排定';
+                    row.insertCell().textContent = item.round4 || '未排定';
+                    row.insertCell().textContent = item.round5 || '未排定';
+                    row.insertCell().textContent = item.award || '未排定';
                 });
+            } else {
+                // 如果篩選後沒有數據（例如選了不存在的組別），顯示提示
+                tableBody.innerHTML = '<tr><td colspan="7">無符合條件的組別數據。</td></tr>';
             }
-
-            // 最後，按照預設數據的組別順序來顯示
-            mergedScheduleData.forEach(item => {
-                const row = tableBody.insertRow();
-                row.insertCell().textContent = item.group || ''; 
-                row.insertCell().textContent = item.round1 || '未排定'; // 空值顯示「未排定」
-                row.insertCell().textContent = item.round2 || '未排定';
-                row.insertCell().textContent = item.round3 || '未排定';
-                row.insertCell().textContent = item.round4 || '未排定';
-                row.insertCell().textContent = item.round5 || '未排定';
-                row.insertCell().textContent = item.award || '未排定';
-            });
 
             // 更新最後更新時間 (此為頁面加載時間，非數據更新時間)
             const now = new Date();
@@ -218,6 +233,61 @@
                 hour12: false // 24小時制
             };
             document.getElementById('lastUpdated').textContent = now.toLocaleString('zh-TW', options);
+        }
+
+        // 函數：填充組別下拉選單
+        function populateGroupDropdown() {
+            const groupSelector = document.getElementById('groupSelector');
+            groupSelector.innerHTML = '<option value="all">顯示所有組別</option>'; // 預設選項
+
+            // 從 defaultScheduleData 獲取所有獨特的組別名稱，並排序
+            // 這樣下拉選單的組別列表是固定且有序的
+            const uniqueGroups = [...new Set(defaultScheduleData.map(item => item.group))]
+                                .filter(group => group) // 過濾掉可能的空值
+                                .sort(); 
+
+            uniqueGroups.forEach(group => {
+                const option = document.createElement('option');
+                option.value = group;
+                option.textContent = group;
+                groupSelector.appendChild(option);
+            });
+        }
+
+        // 函數：根據下拉選單選擇進行篩選並重新渲染表格
+        function filterAndRenderTable() {
+            const selectedGroup = document.getElementById('groupSelector').value;
+            let dataToProcess = JSON.parse(JSON.stringify(defaultScheduleData)); // 從預設數據開始
+
+            // 將從 Google Sheet 獲取的數據合併到預設數據中
+            if (fetchedScheduleData.length > 0) {
+                fetchedScheduleData.forEach(sheetItem => {
+                    const groupName = sheetItem.group;
+                    const defaultItem = dataToProcess.find(item => item.group === groupName);
+                    if (defaultItem) {
+                        // 覆蓋預設數據中的時間信息
+                        defaultItem.round1 = sheetItem.round1;
+                        defaultItem.round2 = sheetItem.round2;
+                        defaultItem.round3 = sheetItem.round3;
+                        defaultItem.round4 = sheetItem.round4;
+                        defaultItem.round5 = sheetItem.round5;
+                        defaultItem.award = sheetItem.award;
+                    } else {
+                        // 如果 Google Sheet 中有 defaultScheduleData 沒有的組別，則新增
+                        dataToProcess.push(sheetItem);
+                    }
+                });
+            }
+
+            let finalDataToDisplay = [];
+            if (selectedGroup === 'all') {
+                finalDataToDisplay = dataToProcess; // 顯示所有組別
+            } else {
+                // 篩選出選中的組別
+                finalDataToDisplay = dataToProcess.filter(item => item.group === selectedGroup);
+            }
+            
+            renderTable(finalDataToDisplay); // 渲染篩選後的數據
         }
 
         // 從外部 Google Apps Script 載入數據
@@ -233,13 +303,22 @@
                 return response.json();
             })
             .then(data => {
-                populateSchedule(data); // 成功讀取到數據，使用 Google Sheet 的數據
+                fetchedScheduleData = data; // 儲存原始數據
+                filterAndRenderTable(); // 第一次載入時，直接篩選並渲染（預設顯示所有）
             })
             .catch(error => {
                 console.error('Error fetching the schedule data:', error);
-                // 即使載入失敗，也使用預設數據填充表格
-                populateSchedule([]); // 傳入空數據，這樣會只顯示 defaultScheduleData
+                fetchedScheduleData = []; // 載入失敗則清空數據
+                filterAndRenderTable(); // 即使失敗，也用預設數據渲染表格
             });
+
+        // 當 HTML 內容完全載入後執行
+        document.addEventListener('DOMContentLoaded', () => {
+            populateGroupDropdown(); // 先填充下拉選單
+            // 綁定下拉選單的變更事件
+            document.getElementById('groupSelector').addEventListener('change', filterAndRenderTable);
+            // 第一次載入數據並渲染表格已在 fetch 的 then/catch 區塊中處理
+        });
     </script>
 </body>
 </html>
