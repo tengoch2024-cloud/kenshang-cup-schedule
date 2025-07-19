@@ -145,24 +145,70 @@
     </div>
 
     <script>
-        function populateSchedule(scheduleData) {
+        // *** 預設的組別資料 - 即使讀不到 Google Sheet 也會顯示這些組別 ***
+        // *** 您可以在這裡新增或刪除組別，確保所有組別都列在這裡 ***
+        const defaultScheduleData = [
+            { group: "六段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "四段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "三段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "二段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "初段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "甲組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "乙組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "丙組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "丁組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "戊組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "己組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "庚組1", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "庚組2", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "辛組1", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "辛組2", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            { group: "辛組3", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            // 如果庚辛組總共是6組，請繼續在這裡補充：
+            // { group: "庚辛_6", round1: null, round2: null, round3: null, round4: null, round5: null, award: null },
+            // ...以此類推，確保所有可能出現的組別都在這裡定義
+            // 注意：這裡只列出組別名稱，時間都是null
+        ];
+
+        function populateSchedule(scheduleDataToDisplay) {
             const tableBody = document.querySelector('#scheduleTable tbody');
             tableBody.innerHTML = ''; // 清空現有內容
 
-            if (scheduleData && scheduleData.length > 0) {
-                scheduleData.forEach(item => {
-                    const row = tableBody.insertRow();
-                    row.insertCell().textContent = item.group || ''; 
-                    row.insertCell().textContent = item.round1 || '未定'; 
-                    row.insertCell().textContent = item.round2 || '未定';
-                    row.insertCell().textContent = item.round3 || '未定';
-                    row.insertCell().textContent = item.round4 || '未定';
-                    row.insertCell().textContent = item.round5 || '未定';
-                    row.insertCell().textContent = item.award || '未定';
+            // 使用預設數據作為基礎，然後用從 Google Sheet 讀到的數據覆蓋
+            const mergedScheduleData = JSON.parse(JSON.stringify(defaultScheduleData)); // 深拷貝預設數據
+            
+            if (scheduleDataToDisplay && scheduleDataToDisplay.length > 0) {
+                scheduleDataToDisplay.forEach(sheetItem => {
+                    const groupName = sheetItem.group;
+                    // 找到預設數據中對應的組別
+                    const defaultItem = mergedScheduleData.find(item => item.group === groupName);
+                    if (defaultItem) {
+                        // 如果 Google Sheet 中有這個組別的數據，就用它來更新
+                        defaultItem.round1 = sheetItem.round1;
+                        defaultItem.round2 = sheetItem.round2;
+                        defaultItem.round3 = sheetItem.round3;
+                        defaultItem.round4 = sheetItem.round4;
+                        defaultItem.round5 = sheetItem.round5;
+                        defaultItem.award = sheetItem.award;
+                    } else {
+                        // 如果 Google Sheet 中有預設數據中沒有的組別，就直接新增
+                        mergedScheduleData.push(sheetItem);
+                    }
                 });
-            } else {
-                tableBody.innerHTML = '<tr><td colspan="7">目前沒有賽程數據可顯示。</td></tr>';
             }
+
+            // 最後，按照預設數據的組別順序來顯示
+            mergedScheduleData.forEach(item => {
+                const row = tableBody.insertRow();
+                row.insertCell().textContent = item.group || ''; 
+                row.insertCell().textContent = item.round1 || '未排定'; // 空值顯示「未排定」
+                row.insertCell().textContent = item.round2 || '未排定';
+                row.insertCell().textContent = item.round3 || '未排定';
+                row.insertCell().textContent = item.round4 || '未排定';
+                row.insertCell().textContent = item.round5 || '未排定';
+                row.insertCell().textContent = item.award || '未排定';
+            });
 
             // 更新最後更新時間 (此為頁面加載時間，非數據更新時間)
             const now = new Date();
@@ -187,11 +233,12 @@
                 return response.json();
             })
             .then(data => {
-                populateSchedule(data);
+                populateSchedule(data); // 成功讀取到數據，使用 Google Sheet 的數據
             })
             .catch(error => {
                 console.error('Error fetching the schedule data:', error);
-                document.querySelector('#scheduleTable tbody').innerHTML = '<tr><td colspan="7">載入賽程數據失敗，請檢查網路或稍後再試。</td></tr>';
+                // 即使載入失敗，也使用預設數據填充表格
+                populateSchedule([]); // 傳入空數據，這樣會只顯示 defaultScheduleData
             });
     </script>
 </body>
