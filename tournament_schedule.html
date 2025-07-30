@@ -13,13 +13,13 @@
             color: #333;
         }
         .container {
-            max-width: 1400px; /* 增加最大寬度以容納更多欄位 */
+            max-width: 960px; /* 調整最大寬度以適應壓縮後的需求，讓表格更緊湊 */
             margin: 0 auto;
             background-color: #ffffff;
             padding: 25px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            overflow-x: auto; /* 當內容超出寬度時，允許水平滾動 */
+            overflow-x: auto; /* 允許水平滾動作為後備 */
         }
         h1 {
             color: #2c3e50;
@@ -58,7 +58,7 @@
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 12px 10px; /* 稍微縮小內邊距以容納更多欄位 */
+            padding: 12px 10px;
             text-align: center;
             white-space: nowrap; /* 避免文字換行 */
         }
@@ -86,21 +86,21 @@
             font-size: 0.9em;
         }
         /* Responsive adjustments for mobile */
-        @media (max-width: 1024px) { /* 在這個斷點下，表格開始允許水平滾動 */
+        @media (max-width: 768px) { /* 手機版直接堆疊，並調整標籤空間 */
             .container {
                 max-width: 100%; /* 讓容器佔滿螢幕寬度 */
             }
             table {
-                width: auto; /* 讓表格內容決定其寬度，以便滾動 */
-                min-width: 1000px; /* 確保表格在滾動時仍有足夠寬度 */
+                width: 100%; /* 表格固定為100%，不再左右滾動 */
+                min-width: unset; /* 取消最小寬度限制 */
             }
             th, td {
-                padding: 8px 6px; /* 再次縮小內邊距 */
-                font-size: 0.8em; /* 縮小字體 */
+                padding: 8px 10px;
+                font-size: 0.9em; /* 適中字體 */
+                white-space: normal; /* 允許文字換行，以免擠在一起 */
             }
-        }
-        @media (max-width: 768px) { /* 在更小的螢幕上，表格可能需要堆疊 */
-            /* 調整手機板堆疊樣式，為更多欄位設定 before content */
+
+            /* 手機板堆疊樣式 */
             table, thead, tbody, th, td, tr {
                 display: block;
             }
@@ -114,21 +114,21 @@
                 border: none;
                 border-bottom: 1px solid #eee;
                 position: relative;
-                padding-left: 65%; /* 增加左側空間以容納更長的標籤 */
+                padding-left: 50%; /* 調整左側空間以容納標籤 */
                 text-align: right;
             }
             td:before {
                 position: absolute;
                 top: 6px;
                 left: 6px;
-                width: 60%; /* 增加標籤的寬度 */
+                width: 45%; /* 標籤的寬度 */
                 padding-right: 10px;
                 white-space: nowrap;
                 text-align: left;
                 font-weight: bold;
                 color: #555;
             }
-            /* Labeling the data cells - 確保所有欄位都有對應的標籤 */
+            /* Labeling the data cells */
             td:nth-of-type(1):before { content: "組別"; }
             td:nth-of-type(2):before { content: "第一場"; }
             td:nth-of-type(3):before { content: "第二場"; }
@@ -136,14 +136,7 @@
             td:nth-of-type(5):before { content: "第四場"; }
             td:nth-of-type(6):before { content: "第五場"; }
             td:nth-of-type(7):before { content: "頒獎時間"; }
-            td:nth-of-type(8):before { content: "冠軍"; }
-            td:nth-of-type(9):before { content: "亞軍"; }
-            td:nth-of-type(10):before { content: "季軍"; }
-            td:nth-of-type(11):before { content: "殿軍"; }
-            td:nth-of-type(12):before { content: "第五名"; }
-            td:nth-of-type(13):before { content: "第六名"; }
-            td:nth-of-type(14):before { content: "第七名"; }
-            td:nth-of-type(15):before { content: "第八名"; }
+            td:nth-of-type(8):before { content: "名次公佈"; } /* 所有名次合併後的標籤 */
         }
     </style>
 </head>
@@ -170,15 +163,7 @@
                     <th>第四場</th>
                     <th>第五場</th>
                     <th>頒獎時間</th>
-                    <th>冠軍</th>
-                    <th>亞軍</th>
-                    <th>季軍</th>
-                    <th>殿軍</th>
-                    <th>第五名</th>
-                    <th>第六名</th>
-                    <th>第七名</th>
-                    <th>第八名</th>
-                </tr>
+                    <th>名次公佈</th> </tr>
             </thead>
             <tbody>
             </tbody>
@@ -195,25 +180,24 @@
         // *** 這些組別名稱也會用來填充下拉選單 ***
 
         const defaultScheduleData = [
-            { group: "六段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "四段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "三段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "二段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "初段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "甲組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "乙組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "丙組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "丁組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "戊組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "己組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "庚組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "辛A組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "辛B組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            // Removed 辛C組 as per request
-            { group: "入門A組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "入門B組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null }, 
-            { group: "幼兒組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null }
+            { group: "六段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "四段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "三段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "二段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "初段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "甲組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "乙組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "丙組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "丁組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "戊組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "己組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "庚組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "辛A組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "辛B組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "入門A組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "入門B組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null }, 
+            { group: "幼兒組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null }
         ];
 
         // *** 新增：自定義組別排序的順序陣列 ***
@@ -243,18 +227,11 @@
                     row.insertCell().textContent = item.round4 || '未排定';
                     row.insertCell().textContent = item.round5 || '未排定';
                     row.insertCell().textContent = item.award || '未排定';
-                    row.insertCell().textContent = item.champion || '未公布';
-                    row.insertCell().textContent = item.runnerUp || '未公布';
-                    row.insertCell().textContent = item.thirdPlace || '未公布';
-                    row.insertCell().textContent = item.fourthPlace || '未公布';
-                    row.insertCell().textContent = item.fifthPlace || '未公布';
-                    row.insertCell().textContent = item.sixthPlace || '未公布';
-                    row.insertCell().textContent = item.seventhPlace || '未公布';
-                    row.insertCell().textContent = item.eighthPlace || '未公布';
+                    row.insertCell().textContent = item.ranksCombined || '未公布'; // 顯示合併名次
                 });
             } else {
                 // 如果篩選後沒有數據（例如選了不存在的組別），顯示提示
-                tableBody.innerHTML = '<tr><td colspan="15">無符合條件的組別數據。</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="8">無符合條件的組別數據。</td></tr>'; // colspan 調整為 8 (7個時間+1個名次)
             }
 
             // 請重新整理頁面以更新賽程 (此為頁面加載時間，非數據更新時間)
@@ -303,14 +280,7 @@
                         defaultItem.round4 = sheetItem.round4;
                         defaultItem.round5 = sheetItem.round5;
                         defaultItem.award = sheetItem.award;
-                        defaultItem.champion = sheetItem.champion;
-                        defaultItem.runnerUp = sheetItem.runnerUp;
-                        defaultItem.thirdPlace = sheetItem.thirdPlace;
-                        defaultItem.fourthPlace = sheetItem.fourthPlace;
-                        defaultItem.fifthPlace = sheetItem.fifthPlace;
-                        defaultItem.sixthPlace = sheetItem.sixthPlace;
-                        defaultItem.seventhPlace = sheetItem.seventhPlace;
-                        defaultItem.eighthPlace = sheetItem.eighthPlace;
+                        defaultItem.ranksCombined = sheetItem.ranksCombined; // 顯示合併名次
                     } else {
                         // 如果 Google Sheet 中有 defaultScheduleData 沒有的組別，則新增
                         dataToProcess.push(sheetItem);
@@ -332,7 +302,7 @@
         // 從外部 Google Apps Script 載入數據
         // *** 您必須將下面的 URL 替換為您從 Google Apps Script 部署獲得的「網路應用程式網址」 ***
         // *** 範例網址看起來會像這樣：https://script.google.com/macros/s/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/exec ***
-        const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw3N3bJyY7OH5sg3N89LDZNMEYAgRQmZymio_X3ruhR8Dnw6pM1crGa1fEw1s0qFSdWJg/exec'; 
+        const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwBsfiI4tmb-gfi2sxiCXQrFHZL6qt2d5JBLkvfg9CyxTN-9FCAxe40-ssRXPDGG-evEw/exec'; 
         
         fetch(GOOGLE_APPS_SCRIPT_WEB_APP_URL) 
             .then(response => {
