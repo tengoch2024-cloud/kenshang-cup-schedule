@@ -114,14 +114,14 @@
                 border: none;
                 border-bottom: 1px solid #eee;
                 position: relative;
-                padding-left: 55%; /* 調整左側空間以容納更多標籤 */
+                padding-left: 60%; /* 增加左側空間以容納更長的標籤 */
                 text-align: right;
             }
             td:before {
                 position: absolute;
                 top: 6px;
                 left: 6px;
-                width: 45%; /* 調整標籤寬度 */
+                width: 55%; /* 增加標籤的寬度 */
                 padding-right: 10px;
                 white-space: nowrap;
                 text-align: left;
@@ -210,6 +210,7 @@
             { group: "庚組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
             { group: "辛A組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
             { group: "辛B組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
+            // Removed 辛C組 as per request
             { group: "入門A組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
             { group: "入門B組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null }, 
             { group: "幼兒組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, champion: null, runnerUp: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null }
@@ -220,7 +221,7 @@
         const customGroupOrder = [
             "六段組", "五段組", "四段組", "三段組", "二段組", "初段組",
             "甲組", "乙組", "丙組", "丁組", "戊組", "己組",
-            "庚組", "辛A組", "辛B組",
+            "庚組", "辛A組", "辛B組", // Removed 辛C組
             "入門A組", "入門B組", "幼兒組"
         ];
         // *** 結束新增 ***
