@@ -8,66 +8,68 @@
         body {
             font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 10px; /* 稍微減少整體頁面邊距 */
             background-color: #f4f7f6;
             color: #333;
         }
         .container {
-            max-width: 1200px; /* 稍微縮小容器的最大寬度，讓表格更緊湊 */
+            max-width: 900px; /* 電腦版最大寬度 */
             margin: 0 auto;
             background-color: #ffffff;
-            padding: 25px;
+            padding: 15px; /* 容器內邊距 */
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            overflow-x: auto; /* 當內容超出寬度時，允許水平滾動 */
+            /* overflow-x: auto; 這裡不強制PC版滾動，如果內容超出再說 */
         }
         h1 {
             color: #2c3e50;
             text-align: center;
-            margin-bottom: 25px;
-            font-size: 2.2em;
+            margin-bottom: 20px;
+            font-size: 1.8em;
         }
         .update-info {
             text-align: center;
-            margin-bottom: 20px;
-            font-size: 0.9em;
+            margin-bottom: 15px;
+            font-size: 0.8em;
             color: #7f8c8d;
         }
         .filter-section {
             text-align: center;
-            margin-bottom: 20px;
-            font-size: 1.1em;
+            margin-bottom: 15px;
+            font-size: 1em;
         }
         .filter-section label {
-            margin-right: 10px;
+            margin-right: 8px;
         }
         .filter-section select {
-            padding: 8px 12px;
+            padding: 6px 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 1em;
+            font-size: 0.9em;
             background-color: white;
             cursor: pointer;
-            min-width: 150px; /* 讓選單不要太窄 */
+            min-width: 120px;
         }
         table {
-            width: 100%;
+            width: 100%; /* 表格寬度100% */
             border-collapse: collapse;
-            margin-bottom: 20px;
-            font-size: 0.95em;
-            table-layout: fixed; /* 新增：固定表格布局，讓欄位寬度更可控 */
+            margin-bottom: 15px;
+            font-size: 0.85em;
+            table-layout: fixed; /* 電腦版固定表格布局，確保各欄位寬度平均 */
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 8px 5px; /* 進一步縮小內邊距 */
+            padding: 5px 3px; /* 極度縮小內邊距 */
             text-align: center;
-            white-space: normal; /* 讓文字自動換行 */
-            word-break: break-word; /* 確保長單詞也能換行 */
+            white-space: normal; /* 讓所有文字都允許換行 */
+            word-break: break-all; /* 強制長單詞換行，避免撐開表格 */
+            vertical-align: top; /* 文字從儲存格頂部開始 */
         }
         th {
-            background-color: #4CAF50; /* Primary green */
+            background-color: #4CAF50;
             color: white;
             font-weight: bold;
+            white-space: nowrap; /* 標題文字不換行 (在非手機模式下) */
         }
         td {
             background-color: #fdfdfd;
@@ -76,61 +78,90 @@
             background-color: #f9f9f9;
         }
         tr:hover td {
-            background-color: #e6ffe6; /* Light green on hover */
+            background-color: #e6ffe6;
         }
         .important-note {
             background-color: #fff3cd;
             border-left: 5px solid #ffe082;
-            padding: 15px;
-            margin-top: 20px;
+            padding: 10px;
+            margin-top: 15px;
             border-radius: 5px;
             color: #856404;
-            font-size: 0.9em;
+            font-size: 0.8em;
         }
-        /* Responsive adjustments for mobile */
-        @media (max-width: 1024px) { /* 在這個斷點下，表格開始允許水平滾動 */
-            .container {
-                max-width: 100%; /* 讓容器佔滿螢幕寬度 */
+
+        /* Responsive adjustments for mobile (768px 及以下) */
+        @media (max-width: 768px) { 
+            body {
+                padding: 5px;
             }
+            .container {
+                padding: 10px;
+                max-width: 100%; 
+                overflow-x: hidden; /* **最重要：在手機上強制隱藏所有水平滾動條** */
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            .filter-section {
+                font-size: 0.9em;
+            }
+            .filter-section select {
+                padding: 5px 8px;
+                font-size: 0.8em;
+            }
+
             table {
-                width: auto; /* 讓表格內容決定其寬度，以便滾動 */
-                min-width: 900px; /* 稍微縮小最小寬度 */
+                width: 100%; /* 表格寬度100%，消除水平滾動 */
+                min-width: unset; /* 取消最小寬度限制 */
+                font-size: 0.8em; 
+                table-layout: auto; /* 手機堆疊模式下，讓表格布局自動適應內容 */
             }
             th, td {
-                padding: 6px 4px; /* 再次縮小內邊距 */
-                font-size: 0.75em; /* 再次縮小字體 */
+                padding: 8px 10px; /* 調整內邊距，適合堆疊顯示 */
+                white-space: normal; /* 允許文字換行 */
+                word-break: break-all; /* 強制長單詞換行 */
             }
-        }
-        @media (max-width: 768px) { /* 在更小的螢幕上，表格可能需要堆疊 */
-            /* 調整手機板堆疊樣式，為更多欄位設定 before content */
+
+            /* 手機板堆疊樣式 */
             table, thead, tbody, th, td, tr {
-                display: block;
+                display: block; /* 強制堆疊 */
             }
             thead tr {
                 position: absolute;
                 top: -9999px;
                 left: -9999px;
             }
-            tr { border: 1px solid #ccc; margin-bottom: 15px; }
+            tr { 
+                border: 1px solid #ccc; 
+                margin-bottom: 10px;
+                padding: 5px;
+            }
             td {
                 border: none;
                 border-bottom: 1px solid #eee;
                 position: relative;
-                padding-left: 50%; /* 調整左側空間以容納標籤 */
+                padding-left: 45%; /* 調整左側空間以容納標籤 */
                 text-align: right;
+                font-size: 0.8em;
+            }
+            td:last-child { 
+                border-bottom: none;
             }
             td:before {
                 position: absolute;
-                top: 6px;
+                top: 50%; 
                 left: 6px;
-                width: 45%; /* 標籤的寬度 */
-                padding-right: 10px;
-                white-space: nowrap;
+                transform: translateY(-50%); 
+                width: 40%; /* 標籤的寬度 */
+                padding-right: 5px; 
+                white-space: nowrap; 
                 text-align: left;
                 font-weight: bold;
                 color: #555;
+                font-size: 0.9em;
             }
-            /* Labeling the data cells - 確保所有欄位都有對應的標籤 */
+            /* Labeling the data cells */
             td:nth-of-type(1):before { content: "組別"; }
             td:nth-of-type(2):before { content: "第一場"; }
             td:nth-of-type(3):before { content: "第二場"; }
@@ -138,7 +169,7 @@
             td:nth-of-type(5):before { content: "第四場"; }
             td:nth-of-type(6):before { content: "第五場"; }
             td:nth-of-type(7):before { content: "頒獎時間"; }
-            td:nth-of-type(8):before { content: "名次公佈"; } /* 所有名次合併後的標籤 */
+            td:nth-of-type(8):before { content: "名次公佈"; }
         }
     </style>
 </head>
@@ -165,7 +196,8 @@
                     <th>第四場</th>
                     <th>第五場</th>
                     <th>頒獎時間</th>
-                    <th>名次公佈</th> </tr>
+                    <th>名次公佈</th>
+                </tr>
             </thead>
             <tbody>
             </tbody>
