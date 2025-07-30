@@ -13,13 +13,13 @@
             color: #333;
         }
         .container {
-            max-width: 960px; /* 調整最大寬度以適應壓縮後的需求，讓表格更緊湊 */
+            max-width: 1200px; /* 稍微縮小容器的最大寬度，讓表格更緊湊 */
             margin: 0 auto;
             background-color: #ffffff;
             padding: 25px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            overflow-x: auto; /* 允許水平滾動作為後備 */
+            overflow-x: auto; /* 當內容超出寬度時，允許水平滾動 */
         }
         h1 {
             color: #2c3e50;
@@ -55,12 +55,14 @@
             border-collapse: collapse;
             margin-bottom: 20px;
             font-size: 0.95em;
+            table-layout: fixed; /* 新增：固定表格布局，讓欄位寬度更可控 */
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 12px 10px;
+            padding: 8px 5px; /* 進一步縮小內邊距 */
             text-align: center;
-            white-space: nowrap; /* 避免文字換行 */
+            white-space: normal; /* 讓文字自動換行 */
+            word-break: break-word; /* 確保長單詞也能換行 */
         }
         th {
             background-color: #4CAF50; /* Primary green */
@@ -86,21 +88,21 @@
             font-size: 0.9em;
         }
         /* Responsive adjustments for mobile */
-        @media (max-width: 768px) { /* 手機版直接堆疊，並調整標籤空間 */
+        @media (max-width: 1024px) { /* 在這個斷點下，表格開始允許水平滾動 */
             .container {
                 max-width: 100%; /* 讓容器佔滿螢幕寬度 */
             }
             table {
-                width: 100%; /* 表格固定為100%，不再左右滾動 */
-                min-width: unset; /* 取消最小寬度限制 */
+                width: auto; /* 讓表格內容決定其寬度，以便滾動 */
+                min-width: 900px; /* 稍微縮小最小寬度 */
             }
             th, td {
-                padding: 8px 10px;
-                font-size: 0.9em; /* 適中字體 */
-                white-space: normal; /* 允許文字換行，以免擠在一起 */
+                padding: 6px 4px; /* 再次縮小內邊距 */
+                font-size: 0.75em; /* 再次縮小字體 */
             }
-
-            /* 手機板堆疊樣式 */
+        }
+        @media (max-width: 768px) { /* 在更小的螢幕上，表格可能需要堆疊 */
+            /* 調整手機板堆疊樣式，為更多欄位設定 before content */
             table, thead, tbody, th, td, tr {
                 display: block;
             }
@@ -128,7 +130,7 @@
                 font-weight: bold;
                 color: #555;
             }
-            /* Labeling the data cells */
+            /* Labeling the data cells - 確保所有欄位都有對應的標籤 */
             td:nth-of-type(1):before { content: "組別"; }
             td:nth-of-type(2):before { content: "第一場"; }
             td:nth-of-type(3):before { content: "第二場"; }
@@ -231,7 +233,7 @@
                 });
             } else {
                 // 如果篩選後沒有數據（例如選了不存在的組別），顯示提示
-                tableBody.innerHTML = '<tr><td colspan="8">無符合條件的組別數據。</td></tr>'; // colspan 調整為 8 (7個時間+1個名次)
+                tableBody.innerHTML = '<tr><td colspan="8">無符合條件的組別數據。</td></tr>'; // colspan 調整為 8
             }
 
             // 請重新整理頁面以更新賽程 (此為頁面加載時間，非數據更新時間)
@@ -302,7 +304,7 @@
         // 從外部 Google Apps Script 載入數據
         // *** 您必須將下面的 URL 替換為您從 Google Apps Script 部署獲得的「網路應用程式網址」 ***
         // *** 範例網址看起來會像這樣：https://script.google.com/macros/s/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/exec ***
-        const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwBsfiI4tmb-gfi2sxiCXQrFHZL6qt2d5JBLkvfg9CyxTN-9FCAxe40-ssRXPDGG-evEw/exec'; 
+        const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw3N3bJyY7OH5sg3N89LDZNMEYAgRQmZymio_X3ruhR8Dnw6pM1crGa1fEw1s0qFSdWJg/exec'; 
         
         fetch(GOOGLE_APPS_SCRIPT_WEB_APP_URL) 
             .then(response => {
