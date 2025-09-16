@@ -8,18 +8,18 @@
         body {
             font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
             margin: 0;
-            padding: 10px; /* 稍微減少整體頁面邊距 */
+            padding: 10px;
             background-color: #f4f7f6;
             color: #333;
         }
         .container {
-            max-width: 900px; /* 電腦版最大寬度 */
+            max-width: 900px;
             margin: 0 auto;
             background-color: #ffffff;
-            padding: 15px; /* 容器內邊距 */
+            padding: 15px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            /* overflow-x: auto; 這裡不強制PC版滾動，如果內容超出再說 */
+            overflow-x: auto;
         }
         h1 {
             color: #2c3e50;
@@ -51,25 +51,25 @@
             min-width: 120px;
         }
         table {
-            width: 100%; /* 表格寬度100% */
+            width: 100%;
             border-collapse: collapse;
             margin-bottom: 15px;
             font-size: 0.85em;
-            table-layout: fixed; /* 電腦版固定表格布局，確保各欄位寬度平均 */
+            table-layout: fixed;
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 5px 3px; /* 極度縮小內邊距 */
+            padding: 5px 3px;
             text-align: center;
-            white-space: normal; /* 讓所有文字都允許換行 */
-            word-break: break-all; /* 強制長單詞換行，避免撐開表格 */
-            vertical-align: top; /* 文字從儲存格頂部開始 */
+            white-space: normal;
+            word-break: break-all;
+            vertical-align: top;
         }
         th {
             background-color: #4CAF50;
             color: white;
             font-weight: bold;
-            white-space: nowrap; /* 標題文字不換行 (在非手機模式下) */
+            white-space: nowrap;
         }
         td {
             background-color: #fdfdfd;
@@ -90,86 +90,66 @@
             font-size: 0.8em;
         }
 
-        /* Responsive adjustments for mobile (768px 及以下) */
-        @media (max-width: 768px) { 
-            body {
-                padding: 5px;
-            }
+        /* 針對手機的卡片式佈局 */
+        @media (max-width: 768px) {
+            body { padding: 5px; }
             .container {
                 padding: 10px;
-                max-width: 100%; 
+                max-width: 100%;
                 overflow-x: hidden; /* **最重要：在手機上強制隱藏所有水平滾動條** */
             }
-            h1 {
-                font-size: 1.5em;
-            }
-            .filter-section {
-                font-size: 0.9em;
-            }
+            h1 { font-size: 1.5em; }
+            .filter-section { font-size: 0.9em; }
             .filter-section select {
                 padding: 5px 8px;
                 font-size: 0.8em;
             }
 
             table {
-                width: 100%; /* 表格寬度100%，消除水平滾動 */
-                min-width: unset; /* 取消最小寬度限制 */
-                font-size: 0.8em; 
-                table-layout: auto; /* 手機堆疊模式下，讓表格布局自動適應內容 */
+                width: 100%;
+                min-width: unset;
+                font-size: 0.8em;
+                table-layout: auto;
             }
             th, td {
-                padding: 8px 10px; /* 調整內邊距，適合堆疊顯示 */
-                white-space: normal; /* 允許文字換行 */
-                word-break: break-all; /* 強制長單詞換行 */
+                padding: 8px 10px;
+                white-space: normal;
+                word-break: break-word;
             }
 
-            /* 手機板堆疊樣式 */
+            /* 卡片式堆疊樣式 */
             table, thead, tbody, th, td, tr {
-                display: block; /* 強制堆疊 */
+                display: block;
+                width: 100%;
             }
             thead tr {
                 position: absolute;
                 top: -9999px;
                 left: -9999px;
             }
-            tr { 
-                border: 1px solid #ccc; 
+            tr {
+                border: 1px solid #ccc;
                 margin-bottom: 10px;
-                padding: 5px;
+                padding: 10px;
             }
             td {
+                display: flex; /* 將每個單元格變成flex容器 */
+                justify-content: space-between; /* 標籤和值左右對齊 */
                 border: none;
                 border-bottom: 1px solid #eee;
-                position: relative;
-                padding-left: 45%; /* 調整左側空間以容納標籤 */
+                padding: 5px 10px;
                 text-align: right;
-                font-size: 0.8em;
-            }
-            td:last-child { 
-                border-bottom: none;
             }
             td:before {
-                position: absolute;
-                top: 50%; 
-                left: 6px;
-                transform: translateY(-50%); 
-                width: 40%; /* 標籤的寬度 */
-                padding-right: 5px; 
-                white-space: nowrap; 
-                text-align: left;
+                content: attr(data-label); /* 從 data-label 屬性獲取標籤 */
                 font-weight: bold;
+                text-align: left;
+                white-space: nowrap;
                 color: #555;
-                font-size: 0.9em;
             }
-            /* Labeling the data cells */
-            td:nth-of-type(1):before { content: "組別"; }
-            td:nth-of-type(2):before { content: "第一場"; }
-            td:nth-of-type(3):before { content: "第二場"; }
-            td:nth-of-type(4):before { content: "第三場"; }
-            td:nth-of-type(5):before { content: "第四場"; }
-            td:nth-of-type(6):before { content: "第五場"; }
-            td:nth-of-type(7):before { content: "頒獎時間"; }
-            td:nth-of-type(8):before { content: "名次公佈"; }
+            td:last-child {
+                border-bottom: none;
+            }
         }
     </style>
 </head>
@@ -209,10 +189,7 @@
     </div>
 
     <script>
-        // *** 預設的組別資料 - 即使讀不到 Google Sheet 也會顯示這些組別 ***
-        // *** 您可以在這裡新增或刪除組別，確保所有組別都列在這裡 ***
-        // *** 這些組別名稱也會用來填充下拉選單 ***
-
+        // *** 預設的組別資料 - 與您試算表中的組別完全一致 ***
         const defaultScheduleData = [
             { group: "國中個人組五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
             { group: "國中個人組四段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
@@ -234,62 +211,62 @@
             { group: "庚組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
             { group: "辛組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
             { group: "入門A組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
-            { group: "入門B組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null }, 
+            { group: "入門B組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
             { group: "幼兒組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null }
         ];
 
-        // *** 新增：自定義組別排序的順序陣列 ***
-        // *** 請確保這個陣列中的組別名稱，與 defaultScheduleData 中的 group 名稱完全一致，且順序就是您期望的排序！ ***
         const customGroupOrder = [
-            "國中個人組五段組", "國中個人組四段組", "國中個人組二段組", "國中個人組初段組", "國中個人組甲組", "六段組", "五段組", "四段組", "三段組", "二段組", "初段組",
+            "國中個人組五段組", "國中個人組四段組", "國中個人組二段組", "國中個人組初段組", "國中個人組甲組",
+            "六段組", "五段組", "四段組", "三段組", "二段組", "初段組",
             "甲組", "乙組", "丙組", "丁組", "戊組", "己組",
             "庚組", "辛組",
             "入門A組", "入門B組", "幼兒組"
         ];
-        // *** 結束新增 ***
 
-        let fetchedScheduleData = []; // 用於儲存從 Google Apps Script 讀取到的原始數據
+        let fetchedScheduleData = [];
 
-        // 函數：渲染表格內容
         function renderTable(dataToDisplay) {
             const tableBody = document.querySelector('#scheduleTable tbody');
-            tableBody.innerHTML = ''; // 清空現有內容
+            tableBody.innerHTML = '';
+            
+            const headersMap = {
+                'group': '組別',
+                'round1': '第一場',
+                'round2': '第二場',
+                'round3': '第三場',
+                'round4': '第四場',
+                'round5': '第五場',
+                'award': '頒獎時間',
+                'ranksCombined': '名次公佈'
+            };
 
             if (dataToDisplay && dataToDisplay.length > 0) {
                 dataToDisplay.forEach(item => {
                     const row = tableBody.insertRow();
-                    row.insertCell().textContent = item.group || ''; 
-                    row.insertCell().textContent = item.round1 || '未排定'; 
-                    row.insertCell().textContent = item.round2 || '未排定';
-                    row.insertCell().textContent = item.round3 || '未排定';
-                    row.insertCell().textContent = item.round4 || '未排定';
-                    row.insertCell().textContent = item.round5 || '未排定';
-                    row.insertCell().textContent = item.award || '未排定';
-                    row.insertCell().textContent = item.ranksCombined || '未公布'; // 顯示合併名次
+                    for (const key in headersMap) {
+                        const cell = row.insertCell();
+                        cell.textContent = item[key] || (key.includes('round') || key === 'award' ? '未排定' : '未公布');
+                        cell.setAttribute('data-label', headersMap[key]);
+                    }
                 });
             } else {
-                // 如果篩選後沒有數據（例如選了不存在的組別），顯示提示
-                tableBody.innerHTML = '<tr><td colspan="8">無符合條件的組別數據。</td></tr>'; // colspan 調整為 8
+                tableBody.innerHTML = '<tr><td colspan="8">無符合條件的組別數據。</td></tr>';
             }
 
-            // 請重新整理頁面以更新賽程 (此為頁面加載時間，非數據更新時間)
             const now = new Date();
             const options = {
                 year: 'numeric', month: 'long', day: 'numeric',
                 hour: '2-digit', minute: '2-digit', second: '2-digit',
-                hour12: false // 24小時制
+                hour12: false
             };
             document.getElementById('lastUpdated').textContent = now.toLocaleString('zh-TW', options);
         }
 
-        // 函數：填充組別下拉選單
         function populateGroupDropdown() {
             const groupSelector = document.getElementById('groupSelector');
-            groupSelector.innerHTML = '<option value="all">顯示所有組別</option>'; // 預設選項
+            groupSelector.innerHTML = '<option value="all">顯示所有組別</option>';
 
-            // 從 customGroupOrder 陣列中獲取組別，這樣就能按照預設順序排列
             const uniqueGroups = customGroupOrder.filter(group => {
-                // 確保只加入 defaultScheduleData 中存在的組別，避免 customGroupOrder 寫錯
                 return defaultScheduleData.some(item => item.group === group);
             });
 
@@ -300,27 +277,24 @@
                 groupSelector.appendChild(option);
             });
         }
-        // 函數：根據下拉選單選擇進行篩選並重新渲染表格
+
         function filterAndRenderTable() {
             const selectedGroup = document.getElementById('groupSelector').value;
-            let dataToProcess = JSON.parse(JSON.stringify(defaultScheduleData)); // 從預設數據開始
+            let dataToProcess = JSON.parse(JSON.stringify(defaultScheduleData));
 
-            // 將從 Google Sheet 獲取的數據合併到預設數據中
             if (fetchedScheduleData.length > 0) {
                 fetchedScheduleData.forEach(sheetItem => {
                     const groupName = sheetItem.group;
                     const defaultItem = dataToProcess.find(item => item.group === groupName);
                     if (defaultItem) {
-                        // 覆蓋預設數據中的時間和名次信息
                         defaultItem.round1 = sheetItem.round1;
                         defaultItem.round2 = sheetItem.round2;
                         defaultItem.round3 = sheetItem.round3;
                         defaultItem.round4 = sheetItem.round4;
                         defaultItem.round5 = sheetItem.round5;
                         defaultItem.award = sheetItem.award;
-                        defaultItem.ranksCombined = sheetItem.ranksCombined; // 顯示合併名次
+                        defaultItem.ranksCombined = sheetItem.ranksCombined;
                     } else {
-                        // 如果 Google Sheet 中有 defaultScheduleData 沒有的組別，則新增
                         dataToProcess.push(sheetItem);
                     }
                 });
@@ -328,21 +302,17 @@
 
             let finalDataToDisplay = [];
             if (selectedGroup === 'all') {
-                finalDataToDisplay = dataToProcess; // 顯示所有組別
+                finalDataToDisplay = dataToProcess;
             } else {
-                // 篩選出選中的組別
                 finalDataToDisplay = dataToProcess.filter(item => item.group === selectedGroup);
             }
             
-            renderTable(finalDataToDisplay); // 渲染篩選後的數據
+            renderTable(finalDataToDisplay);
         }
 
-        // 從外部 Google Apps Script 載入數據
-        // *** 您必須將下面的 URL 替換為您從 Google Apps Script 部署獲得的「網路應用程式網址」 ***
-        // *** 範例網址看起來會像這樣：https://script.google.com/macros/s/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/exec ***
         const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwBsfiI4tmb-gfi2sxiCXQrFHZL6qt2d5JBLkvfg9CyxTN-9FCAxe40-ssRXPDGG-evEw/exec'; 
         
-        fetch(GOOGLE_APPS_SCRIPT_WEB_APP_URL) 
+        fetch(GOOGLE_APPS_SCRIPT_WEB_APP_URL)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -350,21 +320,18 @@
                 return response.json();
             })
             .then(data => {
-                fetchedScheduleData = data; // 儲存原始數據
-                filterAndRenderTable(); // 第一次載入時，直接篩選並渲染（預設顯示所有）
+                fetchedScheduleData = data;
+                filterAndRenderTable();
             })
             .catch(error => {
                 console.error('Error fetching the schedule data:', error);
-                fetchedScheduleData = []; // 載入失敗則清空數據
-                filterAndRenderTable(); // 即使失敗，也用預設數據渲染表格
+                fetchedScheduleData = [];
+                filterAndRenderTable();
             });
 
-        // 當 HTML 內容完全載入後執行
         document.addEventListener('DOMContentLoaded', () => {
-            populateGroupDropdown(); // 先填充下拉選單
-            // 綁定下拉選單的變更事件
+            populateGroupDropdown();
             document.getElementById('groupSelector').addEventListener('change', filterAndRenderTable);
-            // 第一次載入數據並渲染表格已在 fetch 的 then/catch 區塊中處理
         });
     </script>
 </body>
