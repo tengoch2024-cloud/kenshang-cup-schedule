@@ -19,7 +19,7 @@
             padding: 15px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            overflow-x: auto;
+            /* 手機版將在這裡被 media query 覆蓋 */
         }
         h1 {
             color: #2c3e50;
@@ -90,26 +90,29 @@
             font-size: 0.8em;
         }
 
-        /* 針對手機的卡片式佈局 */
+        /* 針對手機的卡片式佈局 (768px 及以下) */
         @media (max-width: 768px) {
             body { padding: 5px; }
             .container {
                 padding: 10px;
                 max-width: 100%;
-                overflow-x: hidden;
+                overflow-x: hidden; /* **最重要：在手機上強制隱藏所有水平滾動條** */
             }
             h1 { font-size: 1.5em; }
+            .update-info { font-size: 0.7em; } /* 縮小更新資訊字體 */
             .filter-section { font-size: 0.9em; }
             .filter-section select {
                 padding: 5px 8px;
                 font-size: 0.8em;
             }
 
+            /* 卡片式堆疊樣式 */
             table {
                 width: 100%;
                 min-width: unset;
                 font-size: 0.8em;
                 table-layout: auto;
+                border: none;
             }
             th, td {
                 padding: 8px 10px;
@@ -117,7 +120,6 @@
                 word-break: break-word;
             }
 
-            /* 卡片式堆疊樣式 */
             table, thead, tbody, th, td, tr {
                 display: block;
                 width: 100%;
@@ -176,14 +178,7 @@
                     <th>第四場</th>
                     <th>第五場</th>
                     <th>頒獎時間</th>
-                    <th>第一名</th>
-                    <th>第二名</th>
-                    <th>第三名</th>
-                    <th>第四名</th>
-                    <th>第五名</th>
-                    <th>第六名</th>
-                    <th>第七名</th>
-                    <th>第八名</th>
+                    <th>名次公佈</th>
                 </tr>
             </thead>
             <tbody>
@@ -198,32 +193,32 @@
     <script>
         // *** 預設的組別資料 - 與您試算表中的組別完全一致 ***
         const defaultScheduleData = [
-            { group: "國中個人五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "國中個人四段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "國中個人二段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "國中個人初段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "國中個人甲組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "六段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "四段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "三段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "二段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "初段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "甲組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "乙組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "丙組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "丁組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "戊組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "己組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "庚組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "辛組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "入門A組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "入門B組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null },
-            { group: "幼兒組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, firstPlace: null, secondPlace: null, thirdPlace: null, fourthPlace: null, fifthPlace: null, sixthPlace: null, seventhPlace: null, eighthPlace: null }
+            { group: "國中個人五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人四段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人二段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人初段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人甲組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "六段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "四段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "三段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "二段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "初段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "甲組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "乙組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "丙組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "丁組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "戊組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "己組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "庚組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "辛組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "入門A組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "入門B組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "幼兒組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null }
         ];
 
         const customGroupOrder = [
-            "國中個人五段組", "國中個人四段組", "國中個人二段組", "國中個人初段組", "國中個人甲組",
+            "國中個人組五段組", "國中個人組四段組", "國中個人組二段組", "國中個人組初段組", "國中個人組甲組",
             "六段組", "五段組", "四段組", "三段組", "二段組", "初段組",
             "甲組", "乙組", "丙組", "丁組", "戊組", "己組",
             "庚組", "辛組",
@@ -244,14 +239,7 @@
                 'round4': '第四場',
                 'round5': '第五場',
                 'award': '頒獎時間',
-                'firstPlace': '第一名', // 新增
-                'secondPlace': '第二名', // 新增
-                'thirdPlace': '第三名', // 新增
-                'fourthPlace': '第四名', // 新增
-                'fifthPlace': '第五名', // 新增
-                'sixthPlace': '第六名', // 新增
-                'seventhPlace': '第七名', // 新增
-                'eighthPlace': '第八名', // 新增
+                'ranksCombined': '名次公佈'
             };
 
             if (dataToDisplay && dataToDisplay.length > 0) {
@@ -264,7 +252,7 @@
                     }
                 });
             } else {
-                tableBody.innerHTML = '<tr><td colspan="15">無符合條件的組別數據。</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="8">無符合條件的組別數據。</td></tr>';
             }
 
             const now = new Date();
@@ -307,14 +295,7 @@
                         defaultItem.round4 = sheetItem.round4;
                         defaultItem.round5 = sheetItem.round5;
                         defaultItem.award = sheetItem.award;
-                        defaultItem.firstPlace = sheetItem.firstPlace;
-                        defaultItem.secondPlace = sheetItem.secondPlace;
-                        defaultItem.thirdPlace = sheetItem.thirdPlace;
-                        defaultItem.fourthPlace = sheetItem.fourthPlace;
-                        defaultItem.fifthPlace = sheetItem.fifthPlace;
-                        defaultItem.sixthPlace = sheetItem.sixthPlace;
-                        defaultItem.seventhPlace = sheetItem.seventhPlace;
-                        defaultItem.eighthPlace = sheetItem.eighthPlace;
+                        defaultItem.ranksCombined = sheetItem.ranksCombined;
                     } else {
                         dataToProcess.push(sheetItem);
                     }
