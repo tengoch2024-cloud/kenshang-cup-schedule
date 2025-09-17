@@ -96,7 +96,7 @@
             .container {
                 padding: 10px;
                 max-width: 100%;
-                overflow-x: auto;
+                overflow-x: hidden;
             }
             h1 { font-size: 1.5em; }
             .filter-section { font-size: 0.9em; }
@@ -109,11 +109,12 @@
                 width: 100%;
                 min-width: unset;
                 font-size: 0.8em;
-                table-layout: fixed;
+                table-layout: auto;
             }
             th, td {
                 padding: 8px 10px;
-                white-space: nowrap; /* 組別名稱不換行，允許左右滑動 */
+                white-space: normal;
+                word-break: break-word;
             }
 
             /* 卡片式堆疊樣式 */
