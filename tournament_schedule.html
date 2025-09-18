@@ -96,17 +96,16 @@
             .container {
                 padding: 10px;
                 max-width: 100%;
-                overflow-x: hidden; /* **最重要：在手機上強制隱藏所有水平滾動條** */
+                overflow-x: hidden;
             }
             h1 { font-size: 1.5em; }
-            .update-info { font-size: 0.7em; } /* 縮小更新資訊字體 */
+            .update-info { font-size: 0.7em; }
             .filter-section { font-size: 0.9em; }
             .filter-section select {
                 padding: 5px 8px;
                 font-size: 0.8em;
             }
 
-            /* 卡片式堆疊樣式 */
             table {
                 width: 100%;
                 min-width: unset;
@@ -120,6 +119,7 @@
                 word-break: break-word;
             }
 
+            /* 卡片式堆疊樣式 */
             table, thead, tbody, th, td, tr {
                 display: block;
                 width: 100%;
@@ -146,8 +146,11 @@
                 content: attr(data-label);
                 font-weight: bold;
                 text-align: left;
-                white-space: nowrap;
+                white-space: normal; /* 讓標籤文字也能換行，避免佔用太多空間 */
                 color: #555;
+                flex-basis: 35%; /* 標籤佔35%的寬度，給內容更多空間 */
+                padding-right: 5px;
+                box-sizing: border-box; /* 確保寬度計算包含內邊距 */
             }
             td:last-child {
                 border-bottom: none;
