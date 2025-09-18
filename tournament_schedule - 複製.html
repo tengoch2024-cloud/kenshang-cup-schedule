@@ -1,0 +1,248 @@
+/* 針對手機的卡片式佈局 (768px 及以下) */
+        @media (max-width: 768px) {
+            body { padding: 5px; }
+            .container {
+                padding: 10px;
+                max-width: 100%;
+                overflow-x: hidden; /* **最重要：在手機上強制隱藏所有水平滾動條** */
+            }
+            h1 { font-size: 1.5em; }
+            .update-info { font-size: 0.7em; }
+            .filter-section { font-size: 0.9em; }
+            .filter-section select {
+                padding: 5px 8px;
+                font-size: 0.8em;
+            }
+
+            table {
+                width: 100%;
+                min-width: unset;
+                font-size: 0.8em;
+                table-layout: auto;
+                border: none;
+            }
+            th, td {
+                padding: 8px 10px;
+                white-space: normal;
+                word-break: break-word;
+            }
+
+            /* 卡片式堆疊樣式 */
+            table, thead, tbody, th, td, tr {
+                display: block;
+                width: 100%;
+            }
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            tr {
+                border: 1px solid #ccc;
+                margin-bottom: 10px;
+                padding: 10px;
+            }
+            td {
+                display: flex;
+                justify-content: space-between; /* 標籤和值左右對齊 */
+                border: none;
+                border-bottom: 1px solid #eee;
+                padding: 5px 10px;
+                text-align: right;
+            }
+            td:before {
+                /* content: attr(data-label); <-- 這裡不需要這行了，因為 renderTable 程式碼已經將標籤放在了 td 內 */
+                font-weight: bold;
+                text-align: left;
+                white-space: nowrap;
+                color: #555;
+            }
+            td:last-child {
+                border-bottom: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏆 彰化縣114學年度縣長盃圍棋錦標賽</h1>
+        <div class="update-info">
+            請重新整理頁面以更新賽程：<span id="lastUpdated"></span>
+        </div>
+        
+        <div class="filter-section">
+            <label for="groupSelector">選擇組別：</label>
+            <select id="groupSelector">
+            </select>
+        </div>
+
+        <table id="scheduleTable">
+            <thead>
+                <tr>
+                    <th>組別</th>
+                    <th>第一場</th>
+                    <th>第二場</th>
+                    <th>第三場</th>
+                    <th>第四場</th>
+                    <th>第五場</th>
+                    <th>頒獎時間</th>
+                    <th>名次公佈</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <div class="important-note">
+            <strong>重要提示：</strong> 各場次開賽時間將依實際比賽進度動態調整，請隨時留意本頁面最新公告！頒獎時間為預估，實際頒獎時間請依現場廣播為準。名次資訊將於比賽結束後陸續更新。
+        </div>
+    </div>
+
+    <script>
+        // *** 預設的組別資料 - 與您試算表中的組別完全一致 ***
+        const defaultScheduleData = [
+            { group: "國中個人五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人四段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人二段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人初段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人甲組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "六段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "四段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "三段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "二段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "初段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "甲組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "乙組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "丙組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "丁組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "戊組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "己組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "庚組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "辛組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "入門A組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "入門B組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "幼兒組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null }
+        ];
+
+        const customGroupOrder = [
+            "國中個人五段組", "國中個人四段組", "國中個人組二段組", "國中個人組初段組", "國中個人組甲組",
+            "六段組", "五段組", "四段組", "三段組", "二段組", "初段組",
+            "甲組", "乙組", "丙組", "丁組", "戊組", "己組",
+            "庚組", "辛組",
+            "入門A組", "入門B組", "幼兒組"
+        ];
+
+        let fetchedScheduleData = [];
+
+        function renderTable(dataToDisplay) {
+            const tableBody = document.querySelector('#scheduleTable tbody');
+            tableBody.innerHTML = '';
+            
+            const headersMap = {
+                'group': '組別',
+                'round1': '第一場',
+                'round2': '第二場',
+                'round3': '第三場',
+                'round4': '第四場',
+                'round5': '第五場',
+                'award': '頒獎時間',
+                'ranksCombined': '名次公佈'
+            };
+
+            if (dataToDisplay && dataToDisplay.length > 0) {
+                dataToDisplay.forEach(item => {
+                    const row = tableBody.insertRow();
+                    for (const key in headersMap) {
+                        const cell = row.insertCell();
+                        cell.textContent = item[key] || (key.includes('round') || key === 'award' ? '未排定' : '未公布');
+                        cell.setAttribute('data-label', headersMap[key]);
+                    }
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="8">無符合條件的組別數據。</td></tr>';
+            }
+
+            const now = new Date();
+            const options = {
+                year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit',
+                hour12: false
+            };
+            document.getElementById('lastUpdated').textContent = now.toLocaleString('zh-TW', options);
+        }
+
+        function populateGroupDropdown() {
+            const groupSelector = document.getElementById('groupSelector');
+            groupSelector.innerHTML = '<option value="all">顯示所有組別</option>';
+
+            const uniqueGroups = customGroupOrder.filter(group => {
+                return defaultScheduleData.some(item => item.group === group);
+            });
+
+            uniqueGroups.forEach(group => {
+                const option = document.createElement('option');
+                option.value = group;
+                option.textContent = group;
+                groupSelector.appendChild(option);
+            });
+        }
+
+        function filterAndRenderTable() {
+            const selectedGroup = document.getElementById('groupSelector').value;
+            let dataToProcess = JSON.parse(JSON.stringify(defaultScheduleData));
+
+            if (fetchedScheduleData.length > 0) {
+                fetchedScheduleData.forEach(sheetItem => {
+                    const groupName = sheetItem.group;
+                    const defaultItem = dataToProcess.find(item => item.group === groupName);
+                    if (defaultItem) {
+                        defaultItem.round1 = sheetItem.round1;
+                        defaultItem.round2 = sheetItem.round2;
+                        defaultItem.round3 = sheetItem.round3;
+                        defaultItem.round4 = sheetItem.round4;
+                        defaultItem.round5 = sheetItem.round5;
+                        defaultItem.award = sheetItem.award;
+                        defaultItem.ranksCombined = sheetItem.ranksCombined;
+                    } else {
+                        dataToProcess.push(sheetItem);
+                    }
+                });
+            }
+
+            let finalDataToDisplay = [];
+            if (selectedGroup === 'all') {
+                finalDataToDisplay = dataToProcess;
+            } else {
+                finalDataToDisplay = dataToProcess.filter(item => item.group === selectedGroup);
+            }
+            
+            renderTable(finalDataToDisplay);
+        }
+
+        const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwBsfiI4tmb-gfi2sxiCXQrFHZL6qt2d5JBLkvfg9CyxTN-9FCAxe40-ssRXPDGG-evEw/exec'; 
+        
+        fetch(GOOGLE_APPS_SCRIPT_WEB_APP_URL)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                fetchedScheduleData = data;
+                filterAndRenderTable();
+            })
+            .catch(error => {
+                console.error('Error fetching the schedule data:', error);
+                fetchedScheduleData = [];
+                filterAndRenderTable();
+            });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateGroupDropdown();
+            document.getElementById('groupSelector').addEventListener('change', filterAndRenderTable);
+        });
+    </script>
+</body>
+</html>
