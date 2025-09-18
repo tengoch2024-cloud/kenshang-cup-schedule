@@ -19,6 +19,7 @@
             padding: 15px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            /* 手機版將在這裡被 media query 覆蓋 */
         }
         h1 {
             color: #2c3e50;
@@ -145,16 +146,8 @@
                 content: attr(data-label);
                 font-weight: bold;
                 text-align: left;
-                white-space: normal;
+                white-space: nowrap;
                 color: #555;
-                flex-shrink: 0; /* 防止標籤被壓縮 */
-                width: 40%; /* 標籤佔40%的寬度 */
-                box-sizing: border-box;
-            }
-            td span.value-content {
-                text-align: right;
-                flex-grow: 1; /* 讓內容自動填滿剩餘空間 */
-                word-break: break-all; /* 確保長字串換行 */
             }
             td:last-child {
                 border-bottom: none;
@@ -254,19 +247,7 @@
                     const row = tableBody.insertRow();
                     for (const key in headersMap) {
                         const cell = row.insertCell();
-                        
-                        // 在 cell 中插入 label 和 value
-                        const labelSpan = document.createElement('span');
-                        labelSpan.classList.add('cell-label');
-                        labelSpan.textContent = headersMap[key];
-                        
-                        const valueSpan = document.createElement('span');
-                        valueSpan.classList.add('cell-value');
-                        valueSpan.textContent = item[key] || (key.includes('round') || key === 'award' ? '未排定' : '未公布');
-                        
-                        cell.appendChild(labelSpan);
-                        cell.appendChild(valueSpan);
-                        
+                        cell.textContent = item[key] || (key.includes('round') || key === 'award' ? '未排定' : '未公布');
                         cell.setAttribute('data-label', headersMap[key]);
                     }
                 });
@@ -325,7 +306,7 @@
             if (selectedGroup === 'all') {
                 finalDataToDisplay = dataToProcess;
             } else {
-                finalDataDataToDisplay = dataToProcess.filter(item => item.group === selectedGroup);
+                finalDataToDisplay = dataToProcess.filter(item => item.group === selectedGroup);
             }
             
             renderTable(finalDataToDisplay);
