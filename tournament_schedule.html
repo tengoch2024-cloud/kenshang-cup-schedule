@@ -146,11 +146,8 @@
                 content: attr(data-label);
                 font-weight: bold;
                 text-align: left;
-                white-space: normal; /* 讓標籤文字也能換行，避免佔用太多空間 */
+                white-space: nowrap;
                 color: #555;
-                flex-basis: 35%; /* 標籤佔35%的寬度，給內容更多空間 */
-                padding-right: 5px;
-                box-sizing: border-box; /* 確保寬度計算包含內邊距 */
             }
             td:last-child {
                 border-bottom: none;
