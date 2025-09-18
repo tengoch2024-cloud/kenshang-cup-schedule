@@ -96,7 +96,7 @@
             .container {
                 padding: 10px;
                 max-width: 100%;
-                overflow-x: hidden;
+                overflow-x: hidden; /* **最重要：在手機上強制隱藏所有水平滾動條** */
             }
             h1 { font-size: 1.5em; }
             .update-info { font-size: 0.7em; }
@@ -146,11 +146,12 @@
                 content: attr(data-label);
                 font-weight: bold;
                 text-align: left;
-                white-space: nowrap;
+                white-space: normal; /* 讓標籤文字能換行 */
+                word-break: break-all;
                 color: #555;
-            }
-            td:last-child {
-                border-bottom: none;
+                flex-basis: 35%; /* 標籤佔35%寬度 */
+                box-sizing: border-box;
+                padding-right: 5px;
             }
         }
     </style>
@@ -193,11 +194,11 @@
     <script>
         // *** 預設的組別資料 - 與您試算表中的組別完全一致 ***
         const defaultScheduleData = [
-            { group: "國中個人五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
-            { group: "國中個人四段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
-            { group: "國中個人二段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
-            { group: "國中個人初段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
-            { group: "國中個人甲組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人組五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人組四段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人組二段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人組初段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人組甲組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
             { group: "六段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
             { group: "五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
             { group: "四段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
