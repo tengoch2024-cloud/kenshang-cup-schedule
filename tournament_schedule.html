@@ -135,7 +135,8 @@
             }
             td {
                 display: flex;
-                justify-content: space-between;
+                flex-wrap: wrap;
+                align-items: center;
                 border: none;
                 border-bottom: 1px solid #eee;
                 padding: 5px 10px;
@@ -147,9 +148,8 @@
                 text-align: left;
                 white-space: nowrap;
                 color: #555;
-                flex-basis: 40%;
-                padding-right: 5px;
-                box-sizing: border-box;
+                flex-shrink: 0;
+                margin-right: 10px;
             }
         }
     </style>
@@ -194,8 +194,8 @@
         const defaultScheduleData = [
             { group: "國中個人五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
             { group: "國中個人四段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
-            { group: "國中個人二段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
-            { group: "國中個人初段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人組二段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人組初段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
             { group: "國中個人組甲組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
             { group: "六段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
             { group: "五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
@@ -208,7 +208,7 @@
             { group: "丙組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
             { group: "丁組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
             { group: "戊組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
-            { group: "己組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "己組", round1: null, round2: null, round3: null, round4: null, round5: null, null, ranksCombined: null },
             { group: "庚組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
             { group: "辛組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
             { group: "入門A組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
