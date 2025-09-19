@@ -136,7 +136,6 @@
             td {
                 display: flex;
                 justify-content: space-between;
-                align-items: center;
                 border: none;
                 border-bottom: 1px solid #eee;
                 padding: 5px 10px;
@@ -146,12 +145,11 @@
                 content: attr(data-label);
                 font-weight: bold;
                 text-align: left;
-                white-space: normal;
-                word-break: break-all;
+                white-space: nowrap;
                 color: #555;
                 flex-basis: 40%;
-                box-sizing: border-box;
                 padding-right: 5px;
+                box-sizing: border-box;
             }
         }
     </style>
@@ -194,10 +192,10 @@
     <script>
         // *** 預設的組別資料 - 與您試算表中的組別完全一致 ***
         const defaultScheduleData = [
-            { group: "國中個人組五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
-            { group: "國中個人組四段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
-            { group: "國中個人組二段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
-            { group: "國中個人組初段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人四段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人二段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
+            { group: "國中個人初段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
             { group: "國中個人組甲組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
             { group: "六段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
             { group: "五段組", round1: null, round2: null, round3: null, round4: null, round5: null, award: null, ranksCombined: null },
@@ -219,7 +217,7 @@
         ];
 
         const customGroupOrder = [
-            "國中個人組五段組", "國中個人組四段組", "國中個人組二段組", "國中個人組初段組", "國中個人組甲組",
+            "國中個人五段組", "國中個人四段組", "國中個人二段組", "國中個人初段組", "國中個人甲組",
             "六段組", "五段組", "四段組", "三段組", "二段組", "初段組",
             "甲組", "乙組", "丙組", "丁組", "戊組", "己組",
             "庚組", "辛組",
@@ -248,19 +246,7 @@
                     const row = tableBody.insertRow();
                     for (const key in headersMap) {
                         const cell = row.insertCell();
-                        
-                        // 在手機上，將標籤和內容分開顯示
-                        const labelSpan = document.createElement('span');
-                        labelSpan.classList.add('cell-label');
-                        labelSpan.textContent = headersMap[key];
-                        
-                        const valueSpan = document.createElement('span');
-                        valueSpan.classList.add('cell-value');
-                        valueSpan.textContent = item[key] || (key.includes('round') || key === 'award' ? '未排定' : '未公布');
-                        
-                        cell.appendChild(labelSpan);
-                        cell.appendChild(valueSpan);
-                        
+                        cell.textContent = item[key] || (key.includes('round') || key === 'award' ? '未排定' : '未公布');
                         cell.setAttribute('data-label', headersMap[key]);
                     }
                 });
