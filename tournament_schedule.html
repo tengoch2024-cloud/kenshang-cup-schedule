@@ -19,6 +19,7 @@
             padding: 15px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            /* 手機版將在這裡被 media query 覆蓋 */
         }
         h1 {
             color: #2c3e50;
@@ -89,13 +90,13 @@
             font-size: 0.8em;
         }
 
-        /* 針對手機的卡片式佈局 (768px 及以下) */
+        /* 針對手機的最終優化版，讓表格可水平滑動但內容不被切 */
         @media (max-width: 768px) {
             body { padding: 5px; }
             .container {
                 padding: 10px;
                 max-width: 100%;
-                overflow-x: hidden;
+                overflow-x: auto; /* **關鍵：允許水平滾動** */
             }
             h1 { font-size: 1.5em; }
             .update-info { font-size: 0.7em; }
@@ -106,50 +107,33 @@
             }
 
             table {
-                width: 100%;
-                min-width: unset;
-                font-size: 0.8em;
-                table-layout: auto;
-                border: none;
+                width: auto; /* 讓表格寬度自動適應內容 */
+                min-width: unset; /* 取消最小寬度限制 */
+                font-size: 0.7em; /* 縮小字體以容納更多內容 */
+                table-layout: auto; /* 讓表格布局自動適應內容 */
+                border: 1px solid #ddd;
             }
             th, td {
-                padding: 8px 10px;
+                padding: 4px 2px; /* 極度縮小內邊距 */
+                white-space: nowrap; /* 強制文字不換行 */
+                word-break: normal;
+            }
+            th {
                 white-space: normal;
-                word-break: break-word;
+                word-break: break-all; /* 標題可以換行 */
             }
 
-            /* 卡片式堆疊樣式 */
+            /* 手機板移除卡片式堆疊樣式，恢復傳統表格佈局 */
+            /* 下方程式碼將覆蓋掉舊的堆疊樣式 */
             table, thead, tbody, th, td, tr {
-                display: block;
-                width: 100%;
+                display: table-cell;
+                width: auto;
             }
             thead tr {
-                position: absolute;
-                top: -9999px;
-                left: -9999px;
-            }
-            tr {
-                border: 1px solid #ccc;
-                margin-bottom: 10px;
-                padding: 10px;
-            }
-            td {
-                display: block; /* 讓每個單元格變為區塊，標籤和內容會自然堆疊 */
-                border: none;
-                border-bottom: 1px solid #eee;
-                padding: 5px 10px;
-                text-align: right;
+                position: static;
             }
             td:before {
-                content: attr(data-label);
-                font-weight: bold;
-                text-align: left;
-                white-space: normal; /* 讓標籤文字能換行 */
-                word-break: break-all;
-                color: #555;
-                font-size: 0.9em;
-                display: block; /* 讓標籤單獨佔據一行 */
-                margin-bottom: 5px;
+                content: none;
             }
         }
     </style>
