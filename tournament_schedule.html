@@ -19,7 +19,6 @@
             padding: 15px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            /* 手機版將在這裡被 media query 覆蓋 */
         }
         h1 {
             color: #2c3e50;
@@ -135,22 +134,14 @@
                 padding: 10px;
             }
             td {
-                display: flex;
-                flex-wrap: wrap; /* 讓內容自動換到下一行 */
-                align-items: center; /* 垂直居中對齊 */
+                display: block;
                 border: none;
                 border-bottom: 1px solid #eee;
                 padding: 5px 10px;
-                text-align: right;
+                text-align: left; /* 讓內容靠左對齊 */
             }
             td:before {
-                content: attr(data-label);
-                font-weight: bold;
-                text-align: left;
-                white-space: nowrap; /* 確保標籤本身不換行 */
-                color: #555;
-                flex-shrink: 0; /* 防止標籤被壓縮 */
-                margin-right: 10px; /* 控制標籤和內容的間距 */
+                content: none; /* 移除標籤內容 */
             }
         }
     </style>
@@ -247,19 +238,7 @@
                     const row = tableBody.insertRow();
                     for (const key in headersMap) {
                         const cell = row.insertCell();
-                        
-                        // 在手機上，將標籤和內容分開顯示
-                        const labelSpan = document.createElement('span');
-                        labelSpan.classList.add('cell-label');
-                        labelSpan.textContent = headersMap[key];
-                        
-                        const valueSpan = document.createElement('span');
-                        valueSpan.classList.add('cell-value');
-                        valueSpan.textContent = item[key] || (key.includes('round') || key === 'award' ? '未排定' : '未公布');
-                        
-                        cell.appendChild(labelSpan);
-                        cell.appendChild(valueSpan);
-                        
+                        cell.textContent = item[key] || (key.includes('round') || key === 'award' ? '未排定' : '未公布');
                         cell.setAttribute('data-label', headersMap[key]);
                     }
                 });
