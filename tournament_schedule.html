@@ -134,22 +134,14 @@
                 padding: 10px;
             }
             td {
-                display: flex;
-                flex-wrap: wrap;
-                align-items: center;
+                display: block;
                 border: none;
                 border-bottom: 1px solid #eee;
                 padding: 5px 10px;
-                text-align: right;
+                text-align: left; /* 讓內容靠左對齊 */
             }
             td:before {
-                content: attr(data-label);
-                font-weight: bold;
-                text-align: left;
-                white-space: nowrap;
-                color: #555;
-                flex-shrink: 0;
-                margin-right: 10px;
+                content: none; /* 移除標籤內容 */
             }
         }
     </style>
@@ -184,9 +176,9 @@
             </tbody>
         </table>
 
-    <div class="important-note">
-        <strong>重要提示：</strong> 各場次開賽時間將依實際比賽進度動態調整，請隨時留意本頁面最新公告！頒獎時間為預估，實際頒獎時間請依現場廣播為準。名次資訊將於比賽結束後陸續更新。
-    </div>
+        <div class="important-note">
+            <strong>重要提示：</strong> 各場次開賽時間將依實際比賽進度動態調整，請隨時留意本頁面最新公告！頒獎時間為預估，實際頒獎時間請依現場廣播為準。名次資訊將於比賽結束後陸續更新。
+        </div>
     </div>
 
     <script>
