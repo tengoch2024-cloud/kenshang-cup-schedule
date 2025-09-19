@@ -134,22 +134,25 @@
                 padding: 10px;
             }
             td {
-                display: flex;
-                justify-content: space-between;
+                display: flex; /* <-- 再次使用 flex 佈局 */
+                justify-content: flex-start; /* 讓標籤和內容緊密對齊 */
+                align-items: flex-start; /* 讓內容從頂部對齊 */
                 border: none;
                 border-bottom: 1px solid #eee;
                 padding: 5px 10px;
-                text-align: right;
+                text-align: left; /* 讓內容靠左對齊 */
             }
             td:before {
                 content: attr(data-label);
                 font-weight: bold;
                 text-align: left;
-                white-space: nowrap;
+                white-space: nowrap; /* 確保標籤不換行，保持單獨一行 */
                 color: #555;
-                flex-basis: 35%;
-                padding-right: 5px;
-                box-sizing: border-box;
+                flex-shrink: 0; /* 防止標籤被壓縮 */
+                margin-right: 10px; /* 控制標籤和內容的間距 */
+            }
+            td:last-child {
+                border-bottom: none;
             }
         }
     </style>
