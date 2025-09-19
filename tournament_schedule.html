@@ -135,7 +135,9 @@
                 padding: 10px;
             }
             td {
-                display: block; /* 讓每個單元格變為區塊，標籤和內容會自然堆疊 */
+                display: flex;
+                flex-wrap: wrap; /* 讓內容自動換到下一行 */
+                align-items: center; /* 垂直居中對齊 */
                 border: none;
                 border-bottom: 1px solid #eee;
                 padding: 5px 10px;
@@ -145,12 +147,10 @@
                 content: attr(data-label);
                 font-weight: bold;
                 text-align: left;
-                white-space: normal; /* 讓標籤文字能換行 */
-                word-break: break-all;
+                white-space: nowrap; /* 確保標籤本身不換行 */
                 color: #555;
-                font-size: 0.9em;
-                display: block; /* 讓標籤單獨佔據一行 */
-                margin-bottom: 5px;
+                flex-shrink: 0; /* 防止標籤被壓縮 */
+                margin-right: 10px; /* 控制標籤和內容的間距 */
             }
         }
     </style>
