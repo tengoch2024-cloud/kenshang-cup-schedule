@@ -19,7 +19,7 @@
             padding: 15px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            /* 手機版將在這裡被 media query 覆蓋 */
+            overflow-x: auto;
         }
         h1 {
             color: #2c3e50;
@@ -90,13 +90,13 @@
             font-size: 0.8em;
         }
 
-        /* 針對手機的卡片式佈局 (768px 及以下) */
+        /* 針對手機的卡片式佈局 */
         @media (max-width: 768px) {
             body { padding: 5px; }
             .container {
                 padding: 10px;
                 max-width: 100%;
-                overflow-x: hidden; /* **最重要：在手機上強制隱藏所有水平滾動條** */
+                overflow-x: hidden;
             }
             h1 { font-size: 1.5em; }
             .update-info { font-size: 0.7em; }
@@ -111,7 +111,6 @@
                 min-width: unset;
                 font-size: 0.8em;
                 table-layout: auto;
-                border: none;
             }
             th, td {
                 padding: 8px 10px;
@@ -146,12 +145,11 @@
                 content: attr(data-label);
                 font-weight: bold;
                 text-align: left;
-                white-space: normal; /* 讓標籤文字能換行 */
-                word-break: break-all;
+                white-space: nowrap;
                 color: #555;
-                flex-basis: 35%; /* 標籤佔35%寬度 */
-                box-sizing: border-box;
-                padding-right: 5px;
+            }
+            td:last-child {
+                border-bottom: none;
             }
         }
     </style>
@@ -219,7 +217,7 @@
         ];
 
         const customGroupOrder = [
-            "國中個人五段組", "國中個人四段組", "國中個人二段組", "國中個人初段組", "國中個人甲組",
+            "國中個人組五段組", "國中個人組四段組", "國中個人組二段組", "國中個人組初段組", "國中個人組甲組",
             "六段組", "五段組", "四段組", "三段組", "二段組", "初段組",
             "甲組", "乙組", "丙組", "丁組", "戊組", "己組",
             "庚組", "辛組",
