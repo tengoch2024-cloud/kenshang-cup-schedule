@@ -118,7 +118,7 @@
                 word-break: break-word;
             }
 
-            /* 卡片式堆疊樣式 - 移除標籤 */
+            /* 卡片式堆疊樣式 */
             table, thead, tbody, th, td, tr {
                 display: block;
                 width: 100%;
@@ -134,15 +134,22 @@
                 padding: 10px;
             }
             td {
-                display: flex; /* 使用 flex 佈局 */
-                justify-content: flex-start; /* 讓內容靠左對齊 */
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
                 border: none;
                 border-bottom: 1px solid #eee;
                 padding: 5px 10px;
-                text-align: left; /* 內容靠左 */
+                text-align: right;
             }
             td:before {
-                content: none; /* <-- 關鍵！移除標籤內容 */
+                content: attr(data-label);
+                font-weight: bold;
+                text-align: left;
+                white-space: nowrap;
+                color: #555;
+                flex-shrink: 0;
+                margin-right: 10px;
             }
         }
     </style>
@@ -177,9 +184,9 @@
             </tbody>
         </table>
 
-        <div class="important-note">
-            <strong>重要提示：</strong> 各場次開賽時間將依實際比賽進度動態調整，請隨時留意本頁面最新公告！頒獎時間為預估，實際頒獎時間請依現場廣播為準。名次資訊將於比賽結束後陸續更新。
-        </div>
+    <div class="important-note">
+        <strong>重要提示：</strong> 各場次開賽時間將依實際比賽進度動態調整，請隨時留意本頁面最新公告！頒獎時間為預估，實際頒獎時間請依現場廣播為準。名次資訊將於比賽結束後陸續更新。
+    </div>
     </div>
 
     <script>
@@ -239,7 +246,19 @@
                     const row = tableBody.insertRow();
                     for (const key in headersMap) {
                         const cell = row.insertCell();
-                        cell.textContent = item[key] || (key.includes('round') || key === 'award' ? '未排定' : '未公布');
+                        
+                        // 在手機上，將標籤和內容分開顯示
+                        const labelSpan = document.createElement('span');
+                        labelSpan.classList.add('cell-label');
+                        labelSpan.textContent = headersMap[key];
+                        
+                        const valueSpan = document.createElement('span');
+                        valueSpan.classList.add('cell-value');
+                        valueSpan.textContent = item[key] || (key.includes('round') || key === 'award' ? '未排定' : '未公布');
+                        
+                        cell.appendChild(labelSpan);
+                        cell.appendChild(valueSpan);
+                        
                         cell.setAttribute('data-label', headersMap[key]);
                     }
                 });
