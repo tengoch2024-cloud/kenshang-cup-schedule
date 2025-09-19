@@ -135,8 +135,7 @@
                 padding: 10px;
             }
             td {
-                display: flex;
-                justify-content: space-between;
+                display: block; /* 讓每個單元格變為區塊，標籤和內容會自然堆疊 */
                 border: none;
                 border-bottom: 1px solid #eee;
                 padding: 5px 10px;
@@ -149,9 +148,9 @@
                 white-space: normal; /* 讓標籤文字能換行 */
                 word-break: break-all;
                 color: #555;
-                flex-basis: 35%;
-                padding-right: 5px;
-                box-sizing: border-box;
+                font-size: 0.9em;
+                display: block; /* 讓標籤單獨佔據一行 */
+                margin-bottom: 5px;
             }
         }
     </style>
@@ -248,7 +247,19 @@
                     const row = tableBody.insertRow();
                     for (const key in headersMap) {
                         const cell = row.insertCell();
-                        cell.textContent = item[key] || (key.includes('round') || key === 'award' ? '未排定' : '未公布');
+                        
+                        // 在手機上，將標籤和內容分開顯示
+                        const labelSpan = document.createElement('span');
+                        labelSpan.classList.add('cell-label');
+                        labelSpan.textContent = headersMap[key];
+                        
+                        const valueSpan = document.createElement('span');
+                        valueSpan.classList.add('cell-value');
+                        valueSpan.textContent = item[key] || (key.includes('round') || key === 'award' ? '未排定' : '未公布');
+                        
+                        cell.appendChild(labelSpan);
+                        cell.appendChild(valueSpan);
+                        
                         cell.setAttribute('data-label', headersMap[key]);
                     }
                 });
