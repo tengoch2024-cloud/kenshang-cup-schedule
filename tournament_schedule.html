@@ -19,7 +19,6 @@
             padding: 15px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            /* 手機版將在這裡被 media query 覆蓋 */
         }
         h1 {
             color: #2c3e50;
@@ -135,8 +134,7 @@
                 padding: 10px;
             }
             td {
-                display: flex;
-                justify-content: space-between;
+                display: block; /* 讓每個單元格變為區塊，標籤和內容會自然堆疊 */
                 border: none;
                 border-bottom: 1px solid #eee;
                 padding: 5px 10px;
@@ -146,12 +144,12 @@
                 content: attr(data-label);
                 font-weight: bold;
                 text-align: left;
-                white-space: normal; /* **修正：讓標籤文字也能換行** */
-                word-break: break-all; /* **修正：確保長標籤也能換行** */
+                white-space: normal; /* 讓標籤文字能換行 */
+                word-break: break-all;
                 color: #555;
-                flex-basis: 35%; /* 標籤佔35%的寬度 */
-                padding-right: 5px;
-                box-sizing: border-box;
+                font-size: 0.9em;
+                display: block; /* 讓標籤單獨佔據一行 */
+                margin-bottom: 5px;
             }
         }
     </style>
