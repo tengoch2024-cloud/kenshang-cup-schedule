@@ -134,14 +134,22 @@
                 padding: 10px;
             }
             td {
-                display: block;
+                display: flex;
+                justify-content: space-between;
                 border: none;
                 border-bottom: 1px solid #eee;
                 padding: 5px 10px;
-                text-align: left; /* 讓內容靠左對齊 */
+                text-align: right;
             }
             td:before {
-                content: none; /* 移除標籤內容 */
+                content: attr(data-label);
+                font-weight: bold;
+                text-align: left;
+                white-space: nowrap;
+                color: #555;
+                flex-basis: 35%;
+                padding-right: 5px;
+                box-sizing: border-box;
             }
         }
     </style>
